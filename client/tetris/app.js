@@ -140,11 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /// FIX ROTATION OF TETROMINOS A THE EDGE 
   function isAtRight() {
-    return current.some(index=> (currentPosition + index + 1) % width === 0);
+    return current.some(index => (currentPosition + index + 1) % width === 0);
   }
 
   function isAtLeft() {
-    return current.some(index=> (currentPosition + index) % width === 0);
+    return current.some(index => (currentPosition + index) % width === 0);
   }
 
   function checkRotatedPosition(P) {
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const upNextTetrominoes = [
     [1, displayWidth + 1, displayWidth * 2 + 1, 2], // lTetromino
     [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], // zTetromino
-    [1, displayWidth + 1, displayWidth + 1, displayWidth + 2], // tTetromino
+    [1, displayWidth, displayWidth + 1, displayWidth + 2], // tTetromino
     [0, 1, displayWidth, displayWidth + 1], // oTetromino
     [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1] // iTetromino
   ];
