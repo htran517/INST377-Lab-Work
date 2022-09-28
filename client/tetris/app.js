@@ -239,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
       scoreDisplay.innerHTML = 'end';
       clearInterval(timerID);
+      timerID = null;
     }
   }
 });
