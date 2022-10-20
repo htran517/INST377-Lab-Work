@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
 
-const { load } = require("dotenv");
-
 /*
   Hook this script to index.html
   by adding `<script src="script.js">` just before your closing `</body>` tag
@@ -12,6 +10,12 @@ const { load } = require("dotenv");
     Under this comment place any utility functions you need - like an inclusive random number selector
     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 */
+
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
+}
 
 function injectHTML(list) {
   console.log('fired injectHTML');
@@ -33,6 +37,12 @@ function injectHTML(list) {
 
 function processRestaurants(list) {
   console.log('fired restaurants list');
+  const range = [...Array(15).keys()]; // Special notation to create an array of 15 elements
+  const newArray = range.map((item) => {
+    const index = getRandomIntInclusive(0, list.length);
+    return list[index];
+  });
+  return newArray;
 
   /*
     ## Process Data Separately From Injecting It
@@ -107,6 +117,7 @@ async function mainEvent() {
 
       // This constant will have the value of your 15-restaurant collection when it processes
       const restaurantList = processRestaurants(arrayFromJson.data);
+      console.log(restaurantList);
 
       // And this function call will perform the "side effect" of injecting the HTML list for you
       injectHTML(restaurantList);
