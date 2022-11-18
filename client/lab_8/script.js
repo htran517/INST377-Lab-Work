@@ -38,7 +38,7 @@ function injectHTML(list) {
         the usual ones are element.innerText and element.innerHTML
         Here's an article on the differences if you want to know more:
         https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent#differences_from_innertext
-  
+
       ## What to do in this function
         - Accept a list of restaurant objects
         - using a .forEach method, inject a list element into your index.html for every element in the list
@@ -85,6 +85,30 @@ function filterList(list, filterInputValue) {
   });
 }
 
+function initMap() {
+  console.log('initMap');
+  const map = L.map('map').setView([38.9897, -76.9378], 13);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  return map;
+}
+
+function markerPlace(array, map) {
+  // const marker = L.marker([51.5, -0.09]).addTo(map);
+  map.eachLayer((layer) => {
+    if (layer instanceof L.Marker) {
+      layer.remove();
+    }
+  });
+
+  array.forEach((item) => {
+    const {coordinates} = item.geocoded_column_1;
+    L.marker([coordinates[1], coordinates[0]]).addTo(map);
+  });
+}
+
 async function mainEvent() {
   /*
         ## Main Event
@@ -92,6 +116,8 @@ async function mainEvent() {
           When you're not working in a heavily-commented "learning" file, this also is more legible
           If you separate your work, when one piece is complete, you can save it and trust it
       */
+
+  const pageMap = initMap();
 
   // the async keyword means we can make API requests
   const form = document.querySelector('.main_form'); // get your main form so you can do JS with it
@@ -140,6 +166,7 @@ async function mainEvent() {
       console.log(event.target.value);
       const filteredList = filterList(currentList, event.target.value);
       injectHTML(filteredList);
+      markerPlace(currentList, pageMap);
     });
 
     // And here's an eventListener! It's listening for a "submit" button specifically being clicked
@@ -153,6 +180,7 @@ async function mainEvent() {
 
       // And this function call will perform the "side effect" of injecting the HTML list for you
       injectHTML(currentList);
+      markerPlace(currentList, pageMap);
 
       // By separating the functions, we open the possibility of regenerating the list
       // without having to retrieve fresh data every time
